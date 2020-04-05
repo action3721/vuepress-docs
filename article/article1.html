@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>模块化对比 | MHQ的文档资料集</title>
+    <meta name="description" content="something to write">
+    <meta name="generator" content="VuePress 1.4.0">
+    <meta name="theme-color" content="#3eaf7c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.4e2a7cf6.css" as="style"><link rel="preload" href="/assets/js/app.fe13dfa6.js" as="script"><link rel="preload" href="/assets/js/2.6651683f.js" as="script"><link rel="preload" href="/assets/js/11.7881b67a.js" as="script"><link rel="prefetch" href="/assets/js/10.2fb06b23.js"><link rel="prefetch" href="/assets/js/12.ee67e8fa.js"><link rel="prefetch" href="/assets/js/13.4000e237.js"><link rel="prefetch" href="/assets/js/14.ab1699bc.js"><link rel="prefetch" href="/assets/js/15.dae38a3c.js"><link rel="prefetch" href="/assets/js/3.4620e86f.js"><link rel="prefetch" href="/assets/js/4.034891ad.js"><link rel="prefetch" href="/assets/js/5.75e6e171.js"><link rel="prefetch" href="/assets/js/6.d0db3455.js"><link rel="prefetch" href="/assets/js/7.c296947f.js"><link rel="prefetch" href="/assets/js/8.429617ef.js"><link rel="prefetch" href="/assets/js/9.857ec67f.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.4e2a7cf6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-574a1499><div class="left" data-v-574a1499><div class="title" data-v-574a1499><div class="loading" data-v-574a1499><div data-v-574a1499><div class="loader" data-v-574a1499></div> <div class="text" data-v-574a1499>MHQ的文档资料集</div></div></div></div> <div class="navBox" data-v-187c9cd4 data-v-574a1499></div></div> <div class="right" data-v-574a1499><div class="content__default" data-v-574a1499><h1 id="模块化对比"><a href="#模块化对比" class="header-anchor">#</a> 模块化对比</h1> <h3 id="（1）-es6module"><a href="#（1）-es6module" class="header-anchor">#</a> （1）[ES6Module]</h3> <p><font color="#3eaf7c">加载模块文件：</font>import<br> <font color="#3eaf7c">定义对外接口：</font>export<br> <font color="#3eaf7c">模块输出：</font>值的引用<br> <font color="#3eaf7c">执行顺序：</font><br>
+编译时加载，采用的静态命令的形式。即在输入时可以指定加载某个输出值的形式。而不是加载整个模块。<br> <font color="#3eaf7c">模式：</font>同步（适用于服务器）<br></p> <h3 id="（2）-commonjs"><a href="#（2）-commonjs" class="header-anchor">#</a> （2）[CommonJS]</h3> <p><font color="#3eaf7c">加载模块文件：</font>require<br> <font color="#3eaf7c">定义对外接口：</font>module.exports<br> <font color="#3eaf7c">模块输出：</font>值的拷贝<br> <font color="#3eaf7c">执行顺序：</font><br>
+运行时加载，先加载整个模块，然后直接生成对象，然后再从这个整体的对象上读取方法（意味着只在第一次加载时运行一次，然后结果缓存，后面在读取只读缓存，要让模块在运行，必须清除缓存）<br> <font color="#3eaf7c">模式：</font>同步（适用于服务器）<br></p> <h3 id="（3）-amd"><a href="#（3）-amd" class="header-anchor">#</a> （3）[AMD]</h3> <p>加载模块文件：define</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'./a'</span><span class="token punctuation">,</span> <span class="token string">'./b'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment">// 依赖必须一开始就写好</span>
+    a<span class="token punctuation">.</span><span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">// 此处略去 100 行</span>
+    b<span class="token punctuation">.</span><span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span> 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>AMD 也支持 CMD 的写法，同时还支持将 require 作为依赖项传递，但 RequireJS 文档里默认建议是上述的写法<br> <font color="#3eaf7c">模式：</font>异步（适用于浏览器）<br> <font color="#3eaf7c">主流Javascript库实现了AMD规范：</font>require.js和curl.js。<br> <font color="#3eaf7c">依赖前置:</font>对于依赖的模块，AMD 是提前执行<br></p> <h3 id="（4）-cmd"><a href="#（4）-cmd" class="header-anchor">#</a> （4）[CMD]</h3> <p>加载模块文件：define</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token function">define</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">require<span class="token punctuation">,</span> exports<span class="token punctuation">,</span> module</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">var</span> clock <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'clock'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   clock<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p><font color="#3eaf7c">模式：</font>异步（适用于浏览器）<br> <font color="#3eaf7c">主流Javascript库实现了CMD规范：</font>sea.js<br> <font color="#3eaf7c">依赖就近：</font>需要用到哪个具体的依赖项才会去执行<br></p></div></div></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.fe13dfa6.js" defer></script><script src="/assets/js/2.6651683f.js" defer></script><script src="/assets/js/11.7881b67a.js" defer></script>
+  </body>
+</html>
