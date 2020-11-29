@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>各坐标系转换</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .btn {
+            padding: 10px;
+            border-radius: 4px;
+            border: 0px;
+            background: #04b8fd;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input,
+        textarea {
+            margin-right: 10px;
+            height: 34px;
+            border-radius: 5px;
+            border: 1px solid #c5c3c3;
+            text-indent: 6px;
+        }
+
+        textarea {
+            display: flex;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>
+        X,Y：<input id="txtXY" value="119.867936,32.334324" /></h2>
+    <h2>
+        批量：<textarea id="txtJson" style="width: 500px; height: 100px;">[{x:119.867936,y:32.334324}]</textarea></h2>
+    <h2>
+        百度转84：
+        <button class="btn" onclick="btnCal2()">计算X,Y</button>&nbsp;&nbsp;
+        <button class="btn" onclick="btnBatchCal_bd09To84()">批量计算X,Y</button>
+    </h2>
+    <h2>
+        84转百度：
+        <button class="btn" onclick="btnCal84Tobd09()">计算X,Y</button>
+    </h2>
+    <h2>
+        84转谷歌：
+        <button class="btn" onclick="btnCal84ToGoogle()">计算X,Y</button>
+    </h2>
+    <h2>
+        谷歌转84：
+        <button class="btn" onclick="btnCalGoogleTo84()">计算X,Y</button>&nbsp;&nbsp;
+        <button class="btn" onclick="btnBatchCal_GoogleTo84()">批量计算X,Y</button>
+    </h2>
+    <h2>
+        结果：<button class="btn" onclick="onExport()">导出Excel</button>
+        <textarea id="txtResult" style="width: 500px; height: 100px;"></textarea>
+
+    </h2>
+    <div id="exportDiv" style="display: none;"></div>
+    <script src="baiduToWGS84.js" type="text/javascript"></script>
+    <script src="../../lib/export.js" type="text/javascript"></script>
+    <script>
+        function btnCal2() {
+            var xy = document.getElementById("txtXY").value;
+            var arr = xy.split(',');
+            var x = arr[0];
+            var y = arr[1];
+            var bd09togcj02 = coordtransform.bd09togcj02(x, y);
+
+            var gcj02towgs84 = coordtransform.gcj02towgs84(bd09togcj02[0], bd09togcj02[1]);
+            document.getElementById("txtResult").value = gcj02towgs84[0].toFixed(6) + "," + gcj02towgs84[1].toFixed(6);
+        };
+
+        function btnBatchCal_bd09To84() {
+            var json = eval(document.getElementById("txtJson").value);
+            var bd09togcj02,
+                gcj02towgs84;
+            for (var i = 0; i < json.length; i++) {
+                bd09togcj02 = coordtransform.bd09togcj02(json[i].x, json[i].y);
+                gcj02towgs84 = coordtransform.gcj02towgs84(bd09togcj02[0], bd09togcj02[1]);
+                json[i].x = parseFloat(gcj02towgs84[0].toFixed(6));
+                json[i].y = parseFloat(gcj02towgs84[1].toFixed(6));
+            }
+            document.getElementById("txtResult").value = JSON.stringify(json);
+        }
+
+        function btnCal84ToGoogle() {
+            var xy = document.getElementById("txtXY").value;
+            var arr = xy.split(',');
+            var x = parseFloat(arr[0]);
+            var y = parseFloat(arr[1]);
+            var wgs84togcj02 = coordtransform.wgs84togcj02(x, y);
+            document.getElementById("txtResult").value = wgs84togcj02[0].toFixed(6) + "," + wgs84togcj02[1].toFixed(6);
+        };
+
+        function btnCalGoogleTo84() {
+            var xy = document.getElementById("txtXY").value;
+            var arr = xy.split(',');
+            var x = parseFloat(arr[0]);
+            var y = parseFloat(arr[1]);
+            var gcj02towgs84 = coordtransform.gcj02towgs84(x, y);
+            document.getElementById("txtResult").value = gcj02towgs84[0].toFixed(6) + "," + gcj02towgs84[1].toFixed(6);
+        }
+        function btnBatchCal_GoogleTo84() {
+            var json = eval(document.getElementById("txtJson").value);
+            var gcj02towgs84;
+            for (var i = 0; i < json.length; i++) {
+                gcj02towgs84 = coordtransform.gcj02towgs84(json[i].x, json[i].y);
+                json[i].x = parseFloat(gcj02towgs84[0].toFixed(6));
+                json[i].y = parseFloat(gcj02towgs84[1].toFixed(6));
+            }
+            document.getElementById("txtResult").value = JSON.stringify(json);
+        }
+
+        function btnCal84Tobd09() {
+            var xy = document.getElementById("txtXY").value;
+            var arr = xy.split(',');
+            var x = parseFloat(arr[0]);
+            var y = parseFloat(arr[1]);
+            var wgs84togcj02 = coordtransform.wgs84togcj02(x, y);
+            var gcj02tobd09 = coordtransform.gcj02tobd09(wgs84togcj02[0], wgs84togcj02[1]);
+            document.getElementById("txtResult").value = gcj02tobd09[0].toFixed(6) + "," + gcj02tobd09[1].toFixed(6);
+        }
+
+        function onExport() {
+            var result = JSON.parse(document.getElementById("txtResult").value);
+            result.toTable();
+            Tools.export.exportExcel("grid", "列表", "表格");
+        }
+    </script>
+
+</body>
+
+</html>

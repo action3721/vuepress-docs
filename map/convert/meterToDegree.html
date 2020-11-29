@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>经纬度与米转换</title>
+    <style>
+        .btn {
+            padding: 10px;
+            border-radius: 4px;
+            border: 0px;
+            background: #04b8fd;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input {
+            margin-right: 10px;
+            height: 34px;
+            border-radius: 5px;
+            border: 1px solid #c5c3c3;
+            text-indent: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>经纬度：<input id="txt1" value="1" /><button type="button" class="btn" onclick="degreeToMeter()">经纬度转米</button></h1>
+    <h1>米：<input id="txt2" value="111" /><button type="button" class="btn" onclick="meterToDegree()">米转经纬度</button></h1>
+
+    <h1>结果：<input id="txtResult" style="width:600px" /></h1>
+
+
+    <script>
+        function degreeToMeter() {
+            var a = document.getElementById("txt1").value, result;
+            result = (a / 180) * 3.14 * 6400;
+            document.getElementById("txtResult").value = result;
+        }
+
+        function meterToDegree() {
+            var a = document.getElementById("txt2").value, result;
+            result = a / 6400 / 3.14 * 180;
+            document.getElementById("txtResult").value = result;
+        }
+    </script>
+</body>
+
+</html>
